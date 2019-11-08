@@ -6,8 +6,8 @@
 package com.sauravyash.catalogueviewer.ZipSelector;
 
 /**
- *
- * @author Yash
+ * 
+ * @author Yash Agasti
  */
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,7 +28,9 @@ import java.util.zip.ZipFile;
  * The first parameter (zipFile) must be a File or a String (file works better). 
  * The second parameter (unzipDir) must be a String.
  * 
- * @author Yash
+ * You will need to surround it in a "try{} catch(Exception e){}" block
+ * 
+ * @author Yash Agasti
  */
 public class FileUnzipper {
 
