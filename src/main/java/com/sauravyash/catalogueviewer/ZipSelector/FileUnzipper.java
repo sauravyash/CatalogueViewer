@@ -22,7 +22,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
- * This class unzips a normal ZIP file
+ * This class unzips a normal ZIP file.
+ * 
+ * Usage: String unzipped_folder_location =  new FileUnzipper(zipFile,unzipDir).unzip();
+ * The first parameter (zipFile) must be a File or a String (file works better). 
+ * The second parameter (unzipDir) must be a String.
+ * 
  * @author Yash
  */
 public class FileUnzipper {
@@ -40,6 +45,12 @@ public class FileUnzipper {
     public FileUnzipper(File zipFile, String unzipDir) throws IOException {
         this.zipFileName = zipFile.getName();
         this.zipFileDir  = zipFile.getParentFile().getCanonicalPath();
+        this.unzipDir    = unzipDir;
+    }
+    
+    public FileUnzipper(String zipFile, String unzipDir) throws IOException {
+        this.zipFileName = new File(zipFile).getName();
+        this.zipFileDir  = new File(zipFile).getParentFile().getCanonicalPath();
         this.unzipDir    = unzipDir;
     }
     
