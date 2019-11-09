@@ -75,15 +75,19 @@ public class FileUnzipper {
      */
     public String unzip() throws IOException {
         String zipFilePath = new File(this.zipFileDir,this.zipFileName).getCanonicalPath();
+        String finalPath = zipFilePath.substring(0, zipFilePath.length() - 4);
         try {
-            Files.walk(new File(unzipDir, zipFileName.substring(0, zipFileName.length() - 4)).toPath())
-            .sorted(Comparator.reverseOrder())
-            .map(Path::toFile)
-            .forEach(File::delete);
+            // delete folder if it already exists
+            if (new File(finalPath).exists()){
+                Files.walk(new File(unzipDir, zipFileName.substring(0, zipFileName.length() - 4)).toPath())
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+        // unzip
         try {
             System.out.println("zipFilePath = " + zipFilePath);
             ZipFile zipFile = new ZipFile(zipFilePath);
@@ -99,24 +103,24 @@ public class FileUnzipper {
                     File file = new File(destPath);
                     file.mkdirs();
                 } else {
-                    InputStream is = zipFile.getInputStream(entry); // get the input stream
-                    OutputStream os = new java.io.FileOutputStream(destPath);
-                    byte[] buf = new byte[4096];
-                    int r;
-                    while ((r = is.read(buf)) != -1) {
-                      os.write(buf, 0, r);
+                     // get the input stream
+                    try (InputStream is = zipFile.getInputStream(entry); 
+                            OutputStream os = new FileOutputStream(destPath)) {
+                        byte[] buf = new byte[4096];
+                        int r;
+                        while ((r = is.read(buf)) != -1) {
+                            os.write(buf, 0, r);
+                        }
                     }
-                    os.close();
-                    is.close();
                     
                     System.out.println("file : " + entry.getName() + " => " + destPath);
                 }
             }
         } catch(IOException e){
+            e.printStackTrace();
             throw new IOException("Error unzipping file: " + zipFilePath, e);
         }
-        String path = zipFilePath.substring(0, zipFilePath.length() - 4);
         
-        return path;
+        return finalPath;
     }
 }
