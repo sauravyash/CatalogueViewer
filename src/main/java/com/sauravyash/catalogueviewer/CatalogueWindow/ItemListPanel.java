@@ -19,7 +19,7 @@ public class ItemListPanel extends javax.swing.JPanel {
     ArrayList<CatalogueItem> items = CatalogueViewer.Catalogue.items; 
     private int Page = 1;
     private int NumberOfPages;
-    public String[] SortBy = {"Name", "Price"};
+    public String[] SortBy = {"Choose An Option: ", "Name (Ascending)", "Name (Descending)", "Price (Ascending)", "Price (Descending)"};
     
     
     /**
@@ -117,19 +117,32 @@ public class ItemListPanel extends javax.swing.JPanel {
     public void Sort(String sortby){
         System.out.println(sortby);
         switch(sortby){
-            case "Name":
+            case "Name (Ascending)":
                 items.sort((o1, o2) -> {
-                    
-                    return 0;
+                    return o1.title.compareToIgnoreCase(o2.title);
                 });
-            case "Price":
+            case "Name (Descending)":
+                items.sort((o1, o2) -> {
+                    return o2.title.compareToIgnoreCase(o1.title);
+                });
+            case "Price (Ascending)":
                 items.sort((o1, o2) -> {
                     if (o1.price > o2.price) return 1;
                     else if (o1.price < o2.price) return -1;
                     else return 0;
                 });
+            case "Price (Descending)":
+                items.sort((o1, o2) -> {
+                    if (o1.price < o2.price) return 1;
+                    else if (o1.price > o2.price) return -1;
+                    else return 0;
+                });
+            default: 
+                items.sort((o1, o2) -> {
+                    return o1.ID.compareToIgnoreCase(o2.ID);
+                });
         }
-        LoadList();
+        LoadList(); 
     }
     
     /**
@@ -156,15 +169,16 @@ public class ItemListPanel extends javax.swing.JPanel {
         gridBagConstraints.ipady = 15;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.weighty = 0.8;
         add(ItemDisplayPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 20;
         gridBagConstraints.ipady = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
+        gridBagConstraints.weighty = 0.2;
         add(PageButtons, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 

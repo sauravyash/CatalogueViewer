@@ -14,6 +14,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -72,9 +75,13 @@ public class CatalogueWindowFrame extends javax.swing.JFrame {
         JPanel NavBarPanel= new NavigationBarPanel();
         
         JComboBox sortingSelector = new JComboBox<>(itemListPanel.SortBy);
-//        sortingSelector.addActionListener((ae) -> {
-//            itemListPanel.Sort(sortingSelector.getSelectedItem().toString());
-//        });
+        sortingSelector.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e)
+            {
+                System.out.println("it beed runned");
+                itemListPanel.Sort(sortingSelector.getSelectedItem().toString());
+            } 
+        });
         
         MainMenu.setLayout(new GridBagLayout());
         

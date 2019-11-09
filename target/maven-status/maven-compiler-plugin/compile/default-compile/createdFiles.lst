@@ -9,10 +9,10 @@ com/sauravyash/FileDrop/FileDrop.class
 com/sauravyash/catalogueviewer/LoginPanel/LoginWindowFrame$1.class
 com/sauravyash/catalogueviewer/CatalogueWindow/RatingPanel$2.class
 com/sauravyash/catalogueviewer/LoginPanel/LoginWindowFrame$3.class
+com/sauravyash/catalogueviewer/CatalogueWindow/CatalogueWindowFrame$1.class
 com/sauravyash/catalogueviewer/ZipSelector/CatalogueSelectorWindowFrame.class
 com/sauravyash/catalogueviewer/CatalogueWindow/CatalogueFile.class
 com/sauravyash/catalogueviewer/LoginPanel/LoginWindowFrame.class
-com/sauravyash/catalogueviewer/SoundManager.class
 com/sauravyash/catalogueviewer/ZipSelector/CatalogueSelectorWindowFrame$2.class
 com/sauravyash/catalogueviewer/CatalogueViewer.class
 com/sauravyash/catalogueviewer/CatalogueWindow/ItemCardPanel$1.class
@@ -40,4 +40,5 @@ com/sauravyash/catalogueviewer/CatalogueWindow/ItemPanel$2.class
 com/sauravyash/catalogueviewer/CatalogueWindow/ItemPanel.class
 com/sauravyash/catalogueviewer/userdatabase/NoRatingsException.class
 com/sauravyash/catalogueviewer/CatalogueWindow/RatingPanel$1.class
+com/sauravyash/catalogueviewer/AudioPlayer.class
 com/sauravyash/catalogueviewer/LoginPanel/LoginWindowFrame$5.class
