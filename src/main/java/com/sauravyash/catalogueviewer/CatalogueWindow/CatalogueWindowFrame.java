@@ -7,7 +7,6 @@ package com.sauravyash.catalogueviewer.CatalogueWindow;
 
 import com.sauravyash.catalogueviewer.AudioPlayer;
 import com.sauravyash.catalogueviewer.CatalogueViewer; 
-import com.sauravyash.catalogueviewer.CatalogueWindow.ItemListPanel.SortBy;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Frame;
@@ -15,7 +14,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Window;
-import java.util.Arrays;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -70,16 +68,13 @@ public class CatalogueWindowFrame extends javax.swing.JFrame {
      */
     private void LoadMainMenu() {
         JPanel MainMenu = new JPanel();
-        JPanel ItemListPanel = new ItemListPanel();
+        ItemListPanel itemListPanel = new ItemListPanel();
         JPanel NavBarPanel= new NavigationBarPanel();
         
-        Class<? extends Enum<?>> e = SortBy.class;
-        String[] list = Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
-        JComboBox SortingSelector = new JComboBox<>(list);
-        SortingSelector.addActionListener((ae) -> {
-            ItemListPanel itemPanel = (ItemListPanel) ItemListPanel.getComponents()[0];
-            itemPanel.Sort(ae.getSource().toString());
-        });
+        JComboBox sortingSelector = new JComboBox<>(itemListPanel.SortBy);
+//        sortingSelector.addActionListener((ae) -> {
+//            itemListPanel.Sort(sortingSelector.getSelectedItem().toString());
+//        });
         
         MainMenu.setLayout(new GridBagLayout());
         
@@ -100,7 +95,7 @@ public class CatalogueWindowFrame extends javax.swing.JFrame {
         SortingSelectorGridBagConstraints.insets = new Insets(0, 0, 0, 48);
 //        SortingSelectorGridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         SortingSelectorGridBagConstraints.anchor = GridBagConstraints.NORTHEAST;
-        MainMenu.add(SortingSelector, SortingSelectorGridBagConstraints);
+        MainMenu.add(sortingSelector, SortingSelectorGridBagConstraints);
         
         
         GridBagConstraints ItemListPanelGridBagConstraints;
@@ -110,7 +105,7 @@ public class CatalogueWindowFrame extends javax.swing.JFrame {
         ItemListPanelGridBagConstraints.fill = GridBagConstraints.BOTH;
         ItemListPanelGridBagConstraints.weightx = 0.5;
         ItemListPanelGridBagConstraints.weighty = 1;
-        MainMenu.add(ItemListPanel, ItemListPanelGridBagConstraints);
+        MainMenu.add(itemListPanel, ItemListPanelGridBagConstraints);
         
         add(MainMenu);
         setExtendedState( this.getExtendedState() | JFrame.MAXIMIZED_BOTH );

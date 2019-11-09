@@ -9,7 +9,6 @@ import com.sauravyash.catalogueviewer.CatalogueViewer;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.JButton;
 
 /**
@@ -20,13 +19,8 @@ public class ItemListPanel extends javax.swing.JPanel {
     ArrayList<CatalogueItem> items = CatalogueViewer.Catalogue.items; 
     private int Page = 1;
     private int NumberOfPages;
-    public static enum SortBy {
-        Name,
-        Price;
-        public static String[] getNames(Class<? extends Enum<?>> e) {
-            return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
-        }
-    }
+    public String[] SortBy = {"Name", "Price"};
+    
     
     /**
      * Constructor for the Item List JPanel
@@ -120,12 +114,20 @@ public class ItemListPanel extends javax.swing.JPanel {
         LoadList();
     }
     
-    public void Sort(String style){
-        switch(style){
+    public void Sort(String sortby){
+        System.out.println(sortby);
+        switch(sortby){
             case "Name":
-                ;
+                items.sort((o1, o2) -> {
+                    
+                    return 0;
+                });
             case "Price":
-                ;
+                items.sort((o1, o2) -> {
+                    if (o1.price > o2.price) return 1;
+                    else if (o1.price < o2.price) return -1;
+                    else return 0;
+                });
         }
         LoadList();
     }
