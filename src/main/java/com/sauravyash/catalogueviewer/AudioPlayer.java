@@ -21,7 +21,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * using the Clip in Java Sound API.
  * @author Yash
  */
-public class CatalogueAudioPlayer extends Thread{
+public class AudioPlayer extends Thread{
      
     /**
      * this flag indicates whether the playback completes or not.
@@ -37,11 +37,11 @@ public class CatalogueAudioPlayer extends Thread{
     private static final int BUFFER_SIZE = 4096;
     
     
-    public CatalogueAudioPlayer(String audioFilePath) {
+    public AudioPlayer(String audioFilePath) {
         audioFile = new File(audioFilePath);
     }
     
-    public CatalogueAudioPlayer(File audioFile) {
+    public AudioPlayer(File audioFile) {
         this.audioFile = audioFile;
     }
     

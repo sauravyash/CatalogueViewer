@@ -5,7 +5,7 @@
  */
 package com.sauravyash.catalogueviewer.CatalogueWindow;
 
-import com.sauravyash.catalogueviewer.CatalogueAudioPlayer;
+import com.sauravyash.catalogueviewer.AudioPlayer;
 import com.sauravyash.catalogueviewer.CatalogueViewer;
 import com.sauravyash.catalogueviewer.userdatabase.NoRatingsException;
 import com.sauravyash.catalogueviewer.userdatabase.RatingDB;
@@ -22,7 +22,7 @@ public class ItemCardPanel extends javax.swing.JPanel {
      * The file for the back button image.
      */
     private CatalogueItem item;
-    private CatalogueAudioPlayer audioPlayer;
+    private AudioPlayer audioPlayer;
     private File BackButtonImage = new File(CatalogueViewer.ResourcesFolder, "BackArrow.png");
     
     /**
@@ -56,7 +56,7 @@ public class ItemCardPanel extends javax.swing.JPanel {
         
         StarRatingPanel.add(new RatingPanel(item));
         if (item.audio != null) {
-            audioPlayer = new CatalogueAudioPlayer(item.audio);
+            audioPlayer = new AudioPlayer(item.audio);
             audioPlayer.start();
         }
         else System.err.println("no audio");

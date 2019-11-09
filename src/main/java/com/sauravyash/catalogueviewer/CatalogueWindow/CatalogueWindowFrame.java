@@ -5,14 +5,18 @@
  */
 package com.sauravyash.catalogueviewer.CatalogueWindow;
 
-import com.sauravyash.catalogueviewer.CatalogueAudioPlayer;
+import com.sauravyash.catalogueviewer.AudioPlayer;
 import com.sauravyash.catalogueviewer.CatalogueViewer; 
+import com.sauravyash.catalogueviewer.CatalogueWindow.ItemListPanel.SortBy;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Window;
+import java.util.Arrays;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -23,14 +27,14 @@ import javax.swing.JPanel;
 public class CatalogueWindowFrame extends javax.swing.JFrame {
 
     private final CardLayout cardlayout;
-    public static CatalogueAudioPlayer menuplayer;
+    public static AudioPlayer menuplayer;
     
     /**
      * Instantiates a new Catalogue Window Frame
      */
     public CatalogueWindowFrame() {
         this.cardlayout = new CardLayout();
-        CatalogueWindowFrame.menuplayer = new CatalogueAudioPlayer(CatalogueViewer.Catalogue.audioFile);
+        CatalogueWindowFrame.menuplayer = new AudioPlayer(CatalogueViewer.Catalogue.audioFile);
         Init();
     }
     
@@ -69,6 +73,14 @@ public class CatalogueWindowFrame extends javax.swing.JFrame {
         JPanel ItemListPanel = new ItemListPanel();
         JPanel NavBarPanel= new NavigationBarPanel();
         
+        Class<? extends Enum<?>> e = SortBy.class;
+        String[] list = Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
+        JComboBox SortingSelector = new JComboBox<>(list);
+        SortingSelector.addActionListener((ae) -> {
+            ItemListPanel itemPanel = (ItemListPanel) ItemListPanel.getComponents()[0];
+            itemPanel.Sort(ae.getSource().toString());
+        });
+        
         MainMenu.setLayout(new GridBagLayout());
         
         GridBagConstraints NavBarPanelGridBagConstraints;
@@ -80,10 +92,21 @@ public class CatalogueWindowFrame extends javax.swing.JFrame {
         NavBarPanelGridBagConstraints.anchor = GridBagConstraints.PAGE_START;
         MainMenu.add(NavBarPanel, NavBarPanelGridBagConstraints);
         
+        GridBagConstraints SortingSelectorGridBagConstraints;
+        SortingSelectorGridBagConstraints = new GridBagConstraints();
+        SortingSelectorGridBagConstraints.gridx = 0;
+        SortingSelectorGridBagConstraints.gridy = 1;
+        SortingSelectorGridBagConstraints.ipadx = 36;
+        SortingSelectorGridBagConstraints.insets = new Insets(0, 0, 0, 48);
+//        SortingSelectorGridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        SortingSelectorGridBagConstraints.anchor = GridBagConstraints.NORTHEAST;
+        MainMenu.add(SortingSelector, SortingSelectorGridBagConstraints);
+        
+        
         GridBagConstraints ItemListPanelGridBagConstraints;
         ItemListPanelGridBagConstraints = new GridBagConstraints();
         ItemListPanelGridBagConstraints.gridx = 0;
-        ItemListPanelGridBagConstraints.gridy = 1;
+        ItemListPanelGridBagConstraints.gridy = 2;
         ItemListPanelGridBagConstraints.fill = GridBagConstraints.BOTH;
         ItemListPanelGridBagConstraints.weightx = 0.5;
         ItemListPanelGridBagConstraints.weighty = 1;
