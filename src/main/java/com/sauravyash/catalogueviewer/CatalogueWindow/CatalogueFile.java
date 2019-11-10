@@ -48,7 +48,7 @@ public class CatalogueFile {
     /**
      * The primary color of the catalogue.
      */
-    public File audioFile;
+    public File audio;
     
     /**
      * The items in the catalogue.
@@ -77,6 +77,14 @@ public class CatalogueFile {
             for (Object item: itemlist) {
 //                System.out.println("Item: " + item);
                 items.add(new CatalogueItem(item));
+            }
+            
+            try{
+                audio = new File(CatalogueViewer.CataloguePath, manifest.get("audio").toString());
+            }
+            catch(NullPointerException e) {/*ignore */ }
+            catch(Exception e) {
+                e.printStackTrace();
             }
         }
     }

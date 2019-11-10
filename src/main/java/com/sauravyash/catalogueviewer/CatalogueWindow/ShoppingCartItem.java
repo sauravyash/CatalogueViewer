@@ -15,7 +15,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 
 /**
- *
+ * The Abstract object of the Shopping Cart Item.
+ * It holds the item type and number in cart.
  * @author Yash
  */
 public class ShoppingCartItem {

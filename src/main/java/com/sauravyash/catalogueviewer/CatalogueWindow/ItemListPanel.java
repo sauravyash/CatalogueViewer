@@ -19,13 +19,14 @@ public class ItemListPanel extends javax.swing.JPanel {
     ArrayList<CatalogueItem> items = CatalogueViewer.Catalogue.items; 
     private int Page = 1;
     private int NumberOfPages;
-    public String[] SortBy = {"Choose An Option: ", "Name (Ascending)", "Name (Descending)", "Price (Ascending)", "Price (Descending)"};
+    public String[] SortBy;
     
     
     /**
      * Constructor for the Item List JPanel
      */
     public ItemListPanel() {
+        this.SortBy = new String[]{"Choose An Option: ", "Name (Ascending)", "Name (Descending)", "Price (Ascending)", "Price (Descending)"};
         initComponents();
         LoadList();
         initPagination();
@@ -114,34 +115,47 @@ public class ItemListPanel extends javax.swing.JPanel {
         LoadList();
     }
     
+    /**
+     * Sorts the item array and then displays them.
+     * 
+     * String can be any of the cases specified below
+     * @param sortby 
+     */
     public void Sort(String sortby){
         System.out.println(sortby);
-        switch(sortby){
+        switch(sortby.trim()){
             case "Name (Ascending)":
                 items.sort((o1, o2) -> {
                     return o1.title.compareToIgnoreCase(o2.title);
                 });
+                break;
             case "Name (Descending)":
                 items.sort((o1, o2) -> {
                     return o2.title.compareToIgnoreCase(o1.title);
                 });
+                break;
             case "Price (Ascending)":
                 items.sort((o1, o2) -> {
                     if (o1.price > o2.price) return 1;
                     else if (o1.price < o2.price) return -1;
                     else return 0;
                 });
+                break;
             case "Price (Descending)":
                 items.sort((o1, o2) -> {
                     if (o1.price < o2.price) return 1;
                     else if (o1.price > o2.price) return -1;
                     else return 0;
                 });
+                break;
             default: 
+                System.out.println("You have sorted default style boiii!");
                 items.sort((o1, o2) -> {
                     return o1.ID.compareToIgnoreCase(o2.ID);
                 });
+                break;
         }
+        SetPage(1);
         LoadList(); 
     }
     

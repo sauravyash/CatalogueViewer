@@ -23,18 +23,19 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- *
+ * The class that manages the rating JSON database
  * @author Yash
  */
 public class RatingDB {
 
     /**
-     *
+     * The path to the location of the database file.
      */
     public static Path RatingDBFile = Paths.get(CatalogueViewer.WorkingDIR.toString(), "RatingDB.json");
     
     /**
-     *
+     * Initializes the database.
+     * Creates the database file if it doesn't exist.
      */
     public static void InitializeDB() {
         File dbFile = new File(RatingDBFile.toString());
@@ -62,11 +63,14 @@ public class RatingDB {
     }
     
     /**
-     *
-     * @param newRating
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws ParseException
+     * Adds a rating to the database.
+     * 
+     * @param newRating the rating object to add.
+     * @throws FileNotFoundException If the database isn't initialized, this 
+     * will happen
+     * @throws IOException General system problems will cause this.
+     * @throws ParseException If the file contains corrupt JSON for some reason, 
+     * the error will be thrown.
      */
     public static void AddRating(Rating newRating) throws FileNotFoundException, IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
@@ -82,16 +86,6 @@ public class RatingDB {
             );
             
             DB.removeIf(duplicate);
-            
-//            DB.forEach(ratingObject -> {
-//                JSONObject rating = (JSONObject) ratingObject;
-//                if (newRating.ItemTitle.equals(rating.get("ItemTitle").toString()) 
-//                        && newRating.UserName.equals(rating.get("UserName").toString())) {
-//                    DB.remove(ratingObject);
-//                    
-//                }
-//                
-//            });
             
             // add user to list
             DB.add(JSONrating);
@@ -119,13 +113,16 @@ public class RatingDB {
     }
     
     /**
-     *
-     * @param ItemTitle
-     * @param CatalogueTitle
-     * @return
-     * @throws NoRatingsException
-     * @throws ParseException
-     * @throws IOException
+     * Calculates the average rating as a percentage of total thumbs up. Similar
+     * to YouTube's rating system.
+     * 
+     * @param ItemTitle The name of the item being calculated
+     * @param CatalogueTitle The name of the catalogue of the item being calculated
+     * @return the percent 0-100 rounded to an integer.
+     * @throws NoRatingsException If there isn't any ratings, this is thrown.
+     * @throws IOException General system problems will cause this.
+     * @throws ParseException If the file contains corrupt JSON for some reason, 
+     * the error will be thrown.
      */
     public static int GetPercentRating(String ItemTitle, String CatalogueTitle) throws NoRatingsException, ParseException, IOException {
         ArrayList<Rating> ratings = GetRatings(ItemTitle, CatalogueTitle);
@@ -140,14 +137,15 @@ public class RatingDB {
     }
     
     /**
-     *
-     * @param ItemTitle
-     * @param CatalogueTitle
-     * @param UserName
-     * @return
-     * @throws IOException
-     * @throws ParseException
-     * @throws NoRatingsException
+     * Retrieves the rating of an item by a particular user.
+     * @param ItemTitle The name of the item of the rating
+     * @param CatalogueTitle The name of the catalogue of the item.
+     * @param UserName the user
+     * @return an int in between 0 to 2.
+     * @throws NoRatingsException If there isn't any ratings, this is thrown.
+     * @throws IOException General system problems will cause this.
+     * @throws ParseException If the file contains corrupt JSON for some reason, 
+     * the error will be thrown.
      */
     public static int GetUserRating(String ItemTitle, String CatalogueTitle, String UserName) throws IOException, ParseException, NoRatingsException {
         ArrayList<Rating> ratings = GetRatings(ItemTitle, CatalogueTitle);
@@ -166,12 +164,13 @@ public class RatingDB {
     }
     
     /**
-     *
-     * @param ItemTitle
-     * @param CatalogueTitle
-     * @return
-     * @throws IOException
-     * @throws ParseException
+     * Retrieves all of the ratings.
+     * @param ItemTitle The name of the item to be retrieved
+     * @param CatalogueTitle The name of the catalogue of the item to be retrieved
+     * @return an int in between 0 to 2.
+     * @throws IOException General system problems will cause this.
+     * @throws ParseException If the file contains corrupt JSON for some reason, 
+     * the error will be thrown.
      */
     public static ArrayList<Rating> GetRatings(String ItemTitle, String CatalogueTitle) throws IOException, ParseException{
         JSONParser jsonParser = new JSONParser();

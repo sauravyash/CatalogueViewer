@@ -22,18 +22,19 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 /**
- *
+ * The class that manages the rating User database
  * @author Yash
  */
 public class UserDatabase {
 
     /**
-     *
+     * The path to the location of the database file.
      */
     public static Path UserDBFile = Paths.get(CatalogueViewer.WorkingDIR.toString(), "UserDB.json");
     
     /**
-     *
+     * Initializes the database.
+     * Creates the database file if it doesn't exist.
      */
     public static void InitializeDB() {
         File dbFile = new File(UserDBFile.toString());
@@ -62,14 +63,15 @@ public class UserDatabase {
     }
     
     /**
-     *
-     * @param fn
-     * @param ln
-     * @param email
-     * @param username
-     * @param pwd
-     * @throws UserAlreadyExistsException
-     * @throws Exception
+     * Adds an user to the database.
+     * 
+     * @param fn The First Name of the User
+     * @param ln The Last Name of the User
+     * @param username The username of the User
+     * @param email The Email of the User
+     * @param pwd The password of the User
+     * @throws UserAlreadyExistsException This is thrown when there is another 
+     * user with an identical username
      */
     public static void AddUser(String fn, String ln, String email, String username, String pwd) throws UserAlreadyExistsException, Exception {
         //JSON parser object to parse read file
@@ -123,10 +125,11 @@ public class UserDatabase {
     }
     
     /**
-     *
-     * @param username
-     * @param password
-     * @return
+     * Checks if the user details provided are valid.
+     * 
+     * @param username The username of the User
+     * @param password The password of the User
+     * @return a Boolean whether or not the details are valid.
      */
     public static boolean IsUserValid(String username, String password) {
         boolean isValid = false;
@@ -159,12 +162,5 @@ public class UserDatabase {
             System.out.println("Parse Exception (File Corrupted???): " + e);
         }
        return isValid;
-    }
-    
-    /**
-     *
-     */
-    protected static void RemoveUser(){
-        
     }
 }

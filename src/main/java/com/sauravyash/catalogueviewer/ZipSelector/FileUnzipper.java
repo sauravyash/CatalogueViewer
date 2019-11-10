@@ -39,10 +39,10 @@ public class FileUnzipper {
     private String unzipDir    = null;
     
     /**
-     * This Constructor initilizes the zip file
-     * @param zipFile
-     * @param unzipDir
-     * @throws java.io.IOException 
+     * Constructor that initilizes the zip file.
+     * @param zipFile the source file to unzip as a File
+     * @param unzipDir the parent directory of the destination as a string
+     * @throws IOException if file doesn't exist, it is thrown
      */
     public FileUnzipper(File zipFile, String unzipDir) throws IOException {
         this.zipFileName = zipFile.getName();
@@ -50,27 +50,24 @@ public class FileUnzipper {
         this.unzipDir    = unzipDir;
     }
     
+    /**
+     * Alternate Constructor that initilizes the zip file
+     * @param zipFile the source file to unzip as a string
+     * @param unzipDir the parent directory of the destination as a string
+     * @throws IOException 
+     */
     public FileUnzipper(String zipFile, String unzipDir) throws IOException {
         this.zipFileName = new File(zipFile).getName();
         this.zipFileDir  = new File(zipFile).getParentFile().getCanonicalPath();
         this.unzipDir    = unzipDir;
     }
-    
-    /**
-     * This Constructor ensures that 
-     * @param zipFileDir
-     * @param zipFileName
-     * @param unzipDir
-     */
-    public FileUnzipper(String zipFileDir, String zipFileName, String unzipDir) {
-        this.zipFileDir = zipFileDir;
-        this.zipFileName = zipFileName;
-        this.unzipDir = unzipDir;
-    }
 
     /**
-     *
-     * @return
+     * Starts the unzip process.
+     * 
+     * It also removes any duplicates.
+     * 
+     * @return the directory of the new unzipped folder
      * @throws IOException
      */
     public String unzip() throws IOException {
@@ -84,30 +81,38 @@ public class FileUnzipper {
                     .map(Path::toFile)
                     .forEach(File::delete);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println(e);
         }
+        
         // unzip
         try {
             System.out.println("zipFilePath = " + zipFilePath);
             ZipFile zipFile = new ZipFile(zipFilePath);
-
+            
+            /*
+                Creates a special enumerable list of all of the files/folders 
+                in the zip
+            */
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
-
+            
+            // runs until it has unzipped everything
             while(entries.hasMoreElements()){
                 ZipEntry entry = entries.nextElement();
-                String destPath = this.unzipDir + File.separator + entry.getName();
+                String destPath = new File(this.unzipDir, entry.getName()).toString();
                 if(entry.isDirectory()){
                     System.out.print("dir  : " + entry.getName());
                     System.out.println(" => " + destPath);
                     File file = new File(destPath);
                     file.mkdirs();
                 } else {
-                     // get the input stream
+                    // retrieve the input stream & output stream
                     try (InputStream is = zipFile.getInputStream(entry); 
                             OutputStream os = new FileOutputStream(destPath)) {
+                        // create byte array buffer 
                         byte[] buf = new byte[4096];
                         int r;
+                        // write from the buffer to the file
                         while ((r = is.read(buf)) != -1) {
                             os.write(buf, 0, r);
                         }
@@ -117,7 +122,6 @@ public class FileUnzipper {
                 }
             }
         } catch(IOException e){
-            e.printStackTrace();
             throw new IOException("Error unzipping file: " + zipFilePath, e);
         }
         

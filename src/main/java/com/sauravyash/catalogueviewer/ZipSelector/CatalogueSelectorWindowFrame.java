@@ -8,14 +8,9 @@ package com.sauravyash.catalogueviewer.ZipSelector;
 import com.sauravyash.FileDrop.FileDrop;
 import com.sauravyash.catalogueviewer.CatalogueViewer;
 import com.sauravyash.catalogueviewer.CatalogueWindow.CatalogueFile;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
+import com.sauravyash.catalogueviewer.CatalogueWindow.Utilities;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,63 +18,77 @@ import javax.swing.JOptionPane;
 import org.json.simple.parser.ParseException;
 
 /**
+ * This frame is used to select, unzip and process the catalogue.
  *
  * @author Yash
  */
 public class CatalogueSelectorWindowFrame extends javax.swing.JFrame {
-    
+
     File CatalogueZip = null;
-    
+
     /**
-     * Creates new form CatalogueWindow
+     * Constructs a new catalogue selector.
      */
     public CatalogueSelectorWindowFrame() {
+        Init();
+    }
+
+    private void Init() {
         initComponents();
         InitZipImgLabel();
         InitFileDrop();
         this.pack();
-        CenterWindow();
+        Utilities.CenterWindow(this);
         ErrorLabel.setVisible(false);
         LoadingLabel.setVisible(false);
         Title.setText("Welcome " + CatalogueViewer.UserData.FirstName);
     }
-    
+
+    /**
+     * Initializes the file drop functionality.
+     */
     private void InitFileDrop() {
-        FileDrop fileDrop = new FileDrop( 
+        FileDrop fileDrop;
+        fileDrop = new FileDrop(
                 System.out, SelectFilePanel, (java.io.File[] files) -> {
-            System.out.println(files[0]);
-            System.out.println(GetFileExtension(files[0]).toLowerCase());
-            if (GetFileExtension(files[0]).equalsIgnoreCase("zip")) {
-                SetSelectedZip(files[0]);
-            } else {
-                java.awt.EventQueue.invokeLater(() -> {
-                    JFrame frame = new JFrame();
-                    JOptionPane.showMessageDialog(frame,
-                            "The file dropped is not a valid zip file!",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                });
-            }
-        });
+                    System.out.println(files[0]);
+                    System.out.println(GetFileExtension(files[0]).toLowerCase());
+                    if (GetFileExtension(files[0]).equalsIgnoreCase("zip")) {
+                        SetSelectedZip(files[0]);
+                    } else {
+                        java.awt.EventQueue.invokeLater(() -> {
+                            JFrame frame = new JFrame();
+                            JOptionPane.showMessageDialog(frame,
+                                    "The file dropped is not a valid zip file!",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        });
+                    }
+                }
+        );
     }
-    
+
+    /**
+     * Initializes the Zip icon shown after a file is selected.
+     */
     private void InitZipImgLabel() {
         ChosenFilePanel.setVisible(false);
         try {
             System.out.println("Loc:" + System.getProperty("user.dir"));
-            BufferedImage img = ImageIO.read(new File(CatalogueViewer.ResourcesFolder, "icon-zip-0.png"));
+            File img = new File(CatalogueViewer.ResourcesFolder, "icon-zip-0.png");
             JLabel label = ZIPFileImage;
-        
-            Image dimg;
-            dimg = img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-            ImageIcon imageIcon = new ImageIcon(dimg);
-            label.setIcon(imageIcon);
-        
-        } catch (IOException e) {
-            System.out.println(e);
+            Utilities.LoadImageInJLabel(label, img);
+        } catch (Exception e) {
+            System.err.println(e);
         }
     }
-    
+
+    /**
+     * Analyses the filename and retrieves the file extension.
+     *
+     * @param file the file to analyze
+     * @return the file extension as a String.
+     */
     private String GetFileExtension(File file) {
         String name = file.getName();
         int lastIndexOf = name.lastIndexOf(".");
@@ -88,38 +97,40 @@ public class CatalogueSelectorWindowFrame extends javax.swing.JFrame {
         }
         return name.substring(lastIndexOf + 1);
     }
-    
-    private void CenterWindow() {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation((dim.width - this.getSize().width) / 2, (dim.height - this.getSize().height) / 2);
-    }
-    
+
     /**
-     *
+     * Creates a file selection dialog for the user to select the catalogue if
+     * the drag n drop method isn't preferred.
      */
     public void OpenFileSelectionDialog() {
         //Create a file chooser
         final JFileChooser fc = new JFileChooser();
         fc.setCurrentDirectory(new File(System.getProperty("user.home")));
-        
+
         int result = fc.showOpenDialog(this);
-        
-        // user selects a file
+
+        // if user selects a file
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fc.getSelectedFile();
             SetSelectedZip(selectedFile);
         }
     }
-    
-    private void SetSelectedZip(File file){
+
+    /**
+     * Show the selected zip file to the user to inform them that the selection
+     * is successful.
+     *
+     * @param file the file to set as the catalogue and show the user.
+     */
+    private void SetSelectedZip(File file) {
         ChosenFilePanel.setVisible(true);
         DragNDropLabel.setVisible(false);
         CatalogueZip = file;
-        
+
         String FileName = file.getName();
         FileNameLabel.setText(FileName);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -256,15 +267,29 @@ public class CatalogueSelectorWindowFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_SelectZipButtonActionPerformed
 
     private void ContinueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContinueButtonActionPerformed
+        Continue();
+    }//GEN-LAST:event_ContinueButtonActionPerformed
+
+    /**
+     * Attempts to unzip the selected file and then opens the catalogue in a new
+     * window.
+     */
+    private void Continue() {
         ErrorLabel.setVisible(false);
         LoadingLabel.setVisible(true);
         java.awt.EventQueue.invokeLater(() -> {
             OpenZip();
         });
-    }//GEN-LAST:event_ContinueButtonActionPerformed
-    
-    private void OpenZip(){
-        try{
+    }
+
+    /**
+     * Opens the zip from the file CatalogueZip (a class property).
+     *
+     * It also attempts to read the manifest file. If anything is unsuccessful,
+     * it displays the error message.
+     */
+    private void OpenZip() {
+        try {
             System.out.println("Catalogue Location: " + CatalogueZip.getAbsolutePath());
             this.setVisible(false);
             String CataloguePath = new FileUnzipper(CatalogueZip, CatalogueViewer.WorkingDIR.toString()).unzip();
@@ -277,16 +302,14 @@ public class CatalogueSelectorWindowFrame extends javax.swing.JFrame {
             }
             CatalogueViewer.OpenCatalogueWindow();
             this.dispose();
-        } catch (IOException | ParseException | NullPointerException e){
+        } catch (IOException | ParseException | NullPointerException e) {
             this.setVisible(true);
-            System.out.println(e);
-            e.printStackTrace();
+            System.err.println(e);
             ErrorLabel.setVisible(true);
             LoadingLabel.setVisible(false);
-        } 
+        }
     }
-    
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ChosenFilePanel;
     private javax.swing.JButton ContinueButton;

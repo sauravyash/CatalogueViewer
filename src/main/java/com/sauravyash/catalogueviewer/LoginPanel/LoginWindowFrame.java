@@ -17,20 +17,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * The Window where the user logs in/registers for an account.
  * @author Yash
  */
 
 public class LoginWindowFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form LoginWindow
+     * Constructs a new Login Window 
      */
     public LoginWindowFrame() {
+        Init();
+    }
+    
+    private void Init(){
         initComponents();
         this.pack();
         this.setSize(350, 250);
-        CenterWindow();
+        Utilities.CenterWindow(this);
         LoginInvalidLabel.setVisible(false);
         RegisterPanel.setVisible(false);
         // System.out.println(this.getX() + " and " +  this.getY());
@@ -43,16 +47,12 @@ public class LoginWindowFrame extends javax.swing.JFrame {
                 }
             }
         });
-        
     }
     
-    
-    
-    private void CenterWindow() {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation((dim.width - this.getSize().width) / 2, (dim.height - this.getSize().height) / 2);
-    }
-    
+    /**
+     * Validates the entered details on the Log In screen and then proceeds to open
+     * the Unzipper utility. 
+     */
     private void Login(){
         String username = LoginUsernameField.getText();
         String pwd = LoginPasswordField.getText();
@@ -362,11 +362,15 @@ public class LoginWindowFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
         Login();
     }//GEN-LAST:event_LoginButtonActionPerformed
-    
+    /**
+     * Checks the given string for being a valid email.
+     * @param emailStr The string to verify
+     * @return whether the string is a valid email as a Boolean.
+     */
     private boolean validateEmail(String emailStr) {
         Pattern VALID_EMAIL_ADDRESS_REGEX = 
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
@@ -374,7 +378,11 @@ public class LoginWindowFrame extends javax.swing.JFrame {
         return matcher.find();
     }
     
-    private void RegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegisterButtonActionPerformed
+    /**
+     * Attempts to register a new account with the provided details in the 
+     * register form.
+     */
+    private void Register() {
         String fn = RegisterFirstNameField.getText();
         String ln = RegisterLastNameField.getText();
         String email = RegisterEmailField.getText();
@@ -435,29 +443,40 @@ public class LoginWindowFrame extends javax.swing.JFrame {
             RegisterFailureLabel.setVisible(true);
             System.out.println("Registration Failure: "+ e );
             RegisterFailureLabel.setText("Registeration was unsuccessful!");
-        }
-        
-        
+        } 
+    }
+    
+    /**
+     * Shows the login form and hides the register form.
+     */
+    private void OpenLoginPage(){
+        RegisterPanel.setVisible(false);
+        LoginPanel.setVisible(true);
+        this.setSize(350, 250);
+        Utilities.CenterWindow(this);
+    }
+    /**
+     * Shows the register form and hides the login form.
+     */
+    private void OpenRegisterPage() {
+        LoginPanel.setVisible(false);
+        RegisterPanel.setVisible(true);
+        this.setSize(350, 400);
+        Utilities.CenterWindow(this);
+        RegisterSuccessLabel.setVisible(false);
+        RegisterFailureLabel.setVisible(false);
+    }
+    
+    private void RegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegisterButtonActionPerformed
+        Register();
     }//GEN-LAST:event_RegisterButtonActionPerformed
 
     private void OpenLoginPageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenLoginPageButtonActionPerformed
         OpenLoginPage();
     }//GEN-LAST:event_OpenLoginPageButtonActionPerformed
     
-    private void OpenLoginPage(){
-        RegisterPanel.setVisible(false);
-        LoginPanel.setVisible(true);
-        this.setSize(350, 250);
-        CenterWindow();
-    }
-    
     private void OpenRegisterPanelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenRegisterPanelButtonActionPerformed
-        LoginPanel.setVisible(false);
-        RegisterPanel.setVisible(true);
-        this.setSize(350, 400);
-        CenterWindow();
-        RegisterSuccessLabel.setVisible(false);
-        RegisterFailureLabel.setVisible(false);
+        OpenRegisterPage();
     }//GEN-LAST:event_OpenRegisterPanelButtonActionPerformed
 
     private void RegisterFirstNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegisterFirstNameFieldActionPerformed
@@ -468,44 +487,7 @@ public class LoginWindowFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_EnterKeyPress
-
-    /** 
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(LoginWindowFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(LoginWindowFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(LoginWindowFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(LoginWindowFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new LoginWindowFrame().setVisible(true);
-//            }
-//        });
-//    }
-
-    
-    
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel HeadingLabel;
     private javax.swing.JButton LoginButton;

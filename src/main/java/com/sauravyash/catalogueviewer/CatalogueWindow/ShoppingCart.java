@@ -78,7 +78,7 @@ public class ShoppingCart {
 
     /**
      * Reloads all of the shopping cart items into the menu bar 
-     * with styling
+     * with styling.
      */
     private void LoadItems() {
         menu.removeAll();

@@ -35,7 +35,7 @@ public class CatalogueWindowFrame extends javax.swing.JFrame {
      */
     public CatalogueWindowFrame() {
         this.cardlayout = new CardLayout();
-        CatalogueWindowFrame.menuplayer = new AudioPlayer(CatalogueViewer.Catalogue.audioFile);
+        CatalogueWindowFrame.menuplayer = new AudioPlayer(CatalogueViewer.Catalogue.audio);
         Init();
     }
     
@@ -79,7 +79,9 @@ public class CatalogueWindowFrame extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent e)
             {
                 System.out.println("it beed runned");
-                itemListPanel.Sort(sortingSelector.getSelectedItem().toString());
+                String selectedBox = sortingSelector.getSelectedItem().toString();
+                System.out.println("selectedBox: "+ selectedBox);
+                itemListPanel.Sort(selectedBox);
             } 
         });
         

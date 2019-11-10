@@ -6,13 +6,13 @@
 package com.sauravyash.catalogueviewer.userdatabase;
 
 /**
- *
+ * The custom exception if there isn't any records of a rating.
  * @author Yash
  */
 public class NoRatingsException extends Exception {
 
     /**
-     *
+     * Constructs an exception identical on the Exception class.
      */
     public NoRatingsException() {
         super();
