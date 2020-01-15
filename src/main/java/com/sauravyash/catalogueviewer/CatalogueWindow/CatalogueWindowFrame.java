@@ -16,7 +16,6 @@ import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -75,14 +74,13 @@ public class CatalogueWindowFrame extends javax.swing.JFrame {
         JPanel NavBarPanel= new NavigationBarPanel();
         
         JComboBox sortingSelector = new JComboBox<>(itemListPanel.SortBy);
-        sortingSelector.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e)
-            {
-                System.out.println("it beed runned");
+        
+        sortingSelector.addActionListener((ActionEvent e) -> {
+            java.awt.EventQueue.invokeLater(() -> {
                 String selectedBox = sortingSelector.getSelectedItem().toString();
                 System.out.println("selectedBox: "+ selectedBox);
                 itemListPanel.Sort(selectedBox);
-            } 
+            }); 
         });
         
         MainMenu.setLayout(new GridBagLayout());

@@ -48,6 +48,7 @@ public class AudioPlayer extends Thread{
      
     /**
      * Play a given audio file.
+     * @throws NullPointerException 
      */
     public void playTrack() throws NullPointerException{
         try {
@@ -69,10 +70,19 @@ public class AudioPlayer extends Thread{
                     
                     while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
                         if (!isPlaying) break;
-                        if (isPaused) try {
-                            this.wait(1);
-                        } catch (InterruptedException ex) {ex.printStackTrace();break;}
-                        else audioLine.write(bytesBuffer, 0, bytesRead);
+                        if (isPaused) {
+                            try {
+                                isPaused = false;
+                                this.wait();
+                            } 
+                            catch (InterruptedException e) {
+                                System.err.println(e);
+                                break;
+                            }
+                        }
+                        else {
+                            audioLine.write(bytesBuffer, 0, bytesRead);
+                        }
                     }
                     
                     audioLine.drain();
@@ -83,28 +93,39 @@ public class AudioPlayer extends Thread{
              
         } catch (UnsupportedAudioFileException ex) {
             System.out.println("The specified audio file is not supported.");
-            ex.printStackTrace();
+            System.err.println(ex);
         } catch (LineUnavailableException ex) {
             System.out.println("Audio line for playing back is unavailable.");
-            ex.printStackTrace();
+            System.err.println(ex);
         } catch (IOException ex) {
             System.out.println("Error playing the audio file.");
-            ex.printStackTrace();
+            System.err.println(ex);
         }  catch (NullPointerException e){
             System.out.println("File (" + audioFile.getAbsolutePath() + ") Not Found");
-            e.printStackTrace();
+            System.err.println(e);
         }
     }
     
+    /**
+     * Start the Audio Track as a new thread.
+     * Required to run as a new thread due to multitasking.
+     */
     @Override
     public void run() {
         this.playTrack();
     }
-
+    
+    /**
+     * Stop the audio.
+     * Stops the thread safely.
+     */
     public void StopPlaying() {
         isPlaying = false;
     }
     
+    /**
+     * pause the thread
+     */
     public void togglePause() {
         isPaused = !isPaused;
     }

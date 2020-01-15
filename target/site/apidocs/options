@@ -1,0 +1,24 @@
+-classpath
+'/Users/Yash/.m2/repository/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar:/Users/Yash/.m2/repository/junit/junit/4.10/junit-4.10.jar:/Users/Yash/.m2/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/Yash/Google Drive/School/y12/IT/Term 4/JavaProjects/CatalogueViewer/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2019. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/Yash/Google Drive/School/y12/IT/Term 4/JavaProjects/CatalogueViewer/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'CatalogueViewer 1.1 API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' '/Users/Yash/Google Drive/School/y12/IT/Term 4/JavaProjects/CatalogueViewer/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'CatalogueViewer 1.1 API'

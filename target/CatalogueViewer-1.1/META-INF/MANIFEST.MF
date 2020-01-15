@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Built-By: Yash
+Class-Path: lib/json-simple-1.1.1.jar lib/junit-4.10.jar lib/hamcrest-
+ core-1.1.jar
+Created-By: Apache Maven 3.3.9
+Build-Jdk: 1.8.0_131
+Main-Class: com.sauravyash.catalogueviewer.CatalogueViewer
+

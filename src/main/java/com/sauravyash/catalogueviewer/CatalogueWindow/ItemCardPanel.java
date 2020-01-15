@@ -232,7 +232,7 @@ public class ItemCardPanel extends javax.swing.JPanel {
         CatalogueWindowFrame.ShowMainMenu();
         this.getParent().remove(this);
         if (audioPlayer != null) audioPlayer.StopPlaying();
-        CatalogueWindowFrame.menuplayer.togglePause();
+        CatalogueWindowFrame.menuplayer.notifyAll();
     }//GEN-LAST:event_BackButtonActionPerformed
 
 
